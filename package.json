@@ -1,0 +1,52 @@
+{
+  "name": "webidl",
+  "version": "1.0.0",
+  "description": "*.webidl support for VSCode.",
+  "publisher": "XadillaX",
+  "scripts": {
+    "update-grammar": "update-grammar izgzhen/language-webidl grammars/webidl.cson syntaxes/webidl.tmLanguage.json"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "icon": "assets/logo-webidl.png",
+  "contributes": {
+    "languages": [
+      {
+        "id": "webidl",
+        "aliases": [
+          "WebIDL",
+          "webidl"
+        ],
+        "extensions": [
+          ".idl",
+          ".webidl"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "webidl",
+        "scopeName": "source.webidl",
+        "path": "./syntaxes/webidl.tmLanguage"
+      }
+    ]
+  },
+  "engines": {
+    "vscode": "^1.20.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/XadillaX/vscode-language-webidl.git"
+  },
+  "author": "XadillaX <i@2333.moe>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/XadillaX/vscode-language-webidl/issues"
+  },
+  "homepage": "https://github.com/XadillaX/vscode-language-webidl#readme",
+  "devDependencies": {
+    "vscode-update-grammar-tool": "^1.0.0"
+  }
+}

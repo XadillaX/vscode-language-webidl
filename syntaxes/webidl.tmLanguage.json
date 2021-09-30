@@ -1,0 +1,213 @@
+{
+  "information_for_contributors": [
+    "This file has been converted from https://github.com/izgzhen/language-webidl/blob/master/grammars/webidl.cson",
+    "If you want to provide a fix or improvement, please create a pull request against the original repository.",
+    "Once accepted there, we are happy to receive an update request."
+  ],
+  "version": "https://github.com/izgzhen/language-webidl/commit/a466a08140ef153524389d74cd87d4c6ea22d4ca",
+  "name": "WebIDL",
+  "scopeName": "source.webidl",
+  "patterns": [
+    {
+      "include": "#comments"
+    },
+    {
+      "include": "#numbers"
+    },
+    {
+      "match": "\\b(boolean|double|interface|dictionary|const|float|long|short|signed|typedef|unsigned|void|unrestricted|octet|byte)\\b",
+      "name": "storage.type.webidl"
+    },
+    {
+      "match": "\\b(null|true|false|Infinity)\\b",
+      "name": "constant.language.webidl"
+    },
+    {
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.definition.string.end.webidl"
+        }
+      },
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.definition.string.begin.webidl"
+        }
+      },
+      "begin": "\"",
+      "name": "string.quoted.double.webidl",
+      "end": "\"",
+      "patterns": [
+        {
+          "include": "#string_escaped_char"
+        },
+        {
+          "include": "#string_placeholder"
+        }
+      ]
+    },
+    {
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.definition.string.end.webidl"
+        }
+      },
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.definition.string.begin.webidl"
+        }
+      },
+      "begin": "'",
+      "name": "string.quoted.single.webidl",
+      "end": "'",
+      "patterns": [
+        {
+          "include": "#string_escaped_char"
+        }
+      ]
+    },
+    {
+      "include": "#function"
+    }
+  ],
+  "repository": {
+    "modblock": {
+      "end": "\\]",
+      "patterns": [
+        {
+          "end": "\\)",
+          "beginCaptures": {
+            "1": {
+              "name": "storage.modifier.modblock.key.webidl"
+            }
+          },
+          "begin": "([A-Za-z_][A-Za-z0-9_]*+)\\b\\(",
+          "patterns": [
+            {
+              "include": "$base"
+            }
+          ],
+          "name": "meta.modblock.webidl"
+        },
+        {
+          "match": "[A-Za-z_][A-Za-z0-9_]*+",
+          "name": "storage.modifier.modblock.key.webidl"
+        }
+      ],
+      "begin": "\\[",
+      "name": "meta.modblock.webidl"
+    },
+    "string_escaped_char": {
+      "patterns": [
+        {
+          "match": "\\\\(\\\\|[abefnprtv'\"?]|[0-3]\\d{0,2}|[4-7]\\d?|x[a-fA-F0-9]{0,2}|u[a-fA-F0-9]{0,4}|U[a-fA-F0-9]{0,8})",
+          "name": "constant.character.escape.webidl"
+        },
+        {
+          "match": "\\\\.",
+          "name": "invalid.illegal.unknown-escape.webidl"
+        }
+      ]
+    },
+    "parens": {
+      "end": "\\)",
+      "patterns": [
+        {
+          "include": "$base"
+        }
+      ],
+      "begin": "\\(",
+      "name": "meta.parens.webidl"
+    },
+    "function": {
+      "end": "(?<=\\})|(?=#)|(;)",
+      "beginCaptures": {
+        "1": {
+          "name": "punctuation.whitespace.function.leading.webidl"
+        },
+        "3": {
+          "name": "entity.name.function.webidl"
+        },
+        "4": {
+          "name": "punctuation.definition.parameters.webidl"
+        }
+      },
+      "begin": "(?x)\n\t  \t\t(?:  ^                                 # begin-of-line\n\t  \t\t  |\n\t  \t\t     (?: (?= \\s )           (?<!else|new|return) (?<=\\w)      #  or word + space before name\n\t  \t\t       | (?= \\s*[A-Za-z_] ) (?<!&&)       (?<=[*&>])   #  or type modifier before name\n\t  \t\t     )\n\t  \t\t)\n\t  \t\t(\\s*) (?!(while|for|do|if|else|switch|catch|enumerate|return|r?iterate)\\s*\\()\n\t  \t\t(\n\t  \t\t\t(?: [A-Za-z_][A-Za-z0-9_]*+ | :: )++ |                  # actual name\n\t  \t\t\t(?: (?<=operator) (?: [-*&<>=+!]+ | \\(\\) | \\[\\] ) )  # if it is a C++ operator\n\t  \t\t)\n\t  \t\t \\s*(?=\\()",
+      "patterns": [
+        {
+          "include": "#comments"
+        },
+        {
+          "include": "#modblock"
+        },
+        {
+          "include": "#parens"
+        },
+        {
+          "match": "\\b(const|override)\\b",
+          "name": "storage.modifier.webidl"
+        }
+      ],
+      "name": "meta.function.webidl"
+    },
+    "comments": {
+      "patterns": [
+        {
+          "captures": {
+            "1": {
+              "name": "meta.toc-list.banner.block.webidl"
+            }
+          },
+          "match": "^/\\* =(\\s*.*?)\\s*= \\*/$\\n?",
+          "name": "comment.block.webidl"
+        },
+        {
+          "end": "\\*/",
+          "captures": {
+            "0": {
+              "name": "punctuation.definition.comment.webidl"
+            }
+          },
+          "begin": "/\\*",
+          "name": "comment.block.webidl"
+        },
+        {
+          "match": "\\*/.*\\n",
+          "name": "invalid.illegal.stray-comment-end.webidl"
+        },
+        {
+          "captures": {
+            "1": {
+              "name": "meta.toc-list.banner.line.webidl"
+            }
+          },
+          "match": "^// =(\\s*.*?)\\s*=\\s*$\\n?",
+          "name": "comment.line.banner.webidl"
+        },
+        {
+          "end": "$\\n?",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.comment.webidl"
+            }
+          },
+          "begin": "//",
+          "patterns": [
+            {
+              "match": "(?>\\\\\\s*\\n)",
+              "name": "punctuation.separator.continuation.webidl"
+            }
+          ],
+          "name": "comment.line.double-slash.webidl"
+        }
+      ]
+    },
+    "numbers": {
+      "patterns": [
+        {
+          "match": "\\b((0(x|X)[0-9a-fA-F]*)|(([0-9]+\\.?[0-9]*)|(\\.[0-9]+))((e|E)(\\+|-)?[0-9]+)?)(L|l|UL|ul|u|U|F|f|ll|LL|ull|ULL)?\\b",
+          "name": "constant.numeric.webidl"
+        }
+      ]
+    }
+  }
+}
