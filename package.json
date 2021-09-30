@@ -1,6 +1,7 @@
 {
   "name": "webidl",
-  "version": "1.0.0",
+  "displayName": "WebIDL (*.webidl files highlighting)",
+  "version": "1.0.1",
   "description": "*.webidl support for VSCode.",
   "publisher": "XadillaX",
   "scripts": {
